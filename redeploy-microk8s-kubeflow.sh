@@ -7,8 +7,6 @@ time sudo snap remove --purge microk8s || true
 juju unregister microk8s-localhost -y || true
 
 time sudo snap install microk8s --classic --channel 1.21
-sudo adduser "$USER" microk8s
-newgrp microk8s
 
 time microk8s status --wait-ready
 time microk8s enable dns storage ingress metallb:10.64.140.43-10.64.140.49
