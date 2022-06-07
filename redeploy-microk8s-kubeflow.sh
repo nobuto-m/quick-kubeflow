@@ -14,6 +14,7 @@ time microk8s status --wait-ready
 time microk8s enable dns storage ingress metallb:10.64.140.43-10.64.140.49
 time microk8s kubectl wait deployment --all -A --for condition=Available=True --timeout=1h
 
+time sudo snap install juju --classic
 time juju bootstrap microk8s
 juju add-model kubeflow
 time juju deploy --trust kubeflow
