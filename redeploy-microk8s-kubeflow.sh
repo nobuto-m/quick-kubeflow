@@ -28,8 +28,8 @@ juju config dex-auth static-password=admin
 juju refresh kfp-profile-controller --channel edge
 
 # https://github.com/canonical/bundle-kubeflow/issues/459
-microk8s kubectl patch Deployment katib-controller -n kubeflow --type=json \
-  -p='[{"op": "add", "path": "/spec/template/spec/containers/0/args/-", "value": "--trial-resources=Workflow.v1alpha1.argoproj.io"}]'
+#microk8s kubectl patch Deployment katib-controller -n kubeflow --type=json \
+#  -p='[{"op": "add", "path": "/spec/template/spec/containers/0/args/-", "value": "--trial-resources=Workflow.v1alpha1.argoproj.io"}]'
 
 time sleep 60
 time microk8s kubectl wait -n kubeflow deployment --all --for condition=Available=True --timeout=1h
