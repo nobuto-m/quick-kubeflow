@@ -6,6 +6,8 @@ set -x
 time sudo snap remove --purge microk8s || true
 juju unregister microk8s-localhost -y || true
 
+# TODO: use 1.21/edge or something once a new revision is published to
+# the snap store: https://github.com/canonical/microk8s/pull/3206
 time sudo snap install microk8s --classic --channel 1.21
 
 time microk8s status --wait-ready
