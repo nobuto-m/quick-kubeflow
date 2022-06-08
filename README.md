@@ -2,11 +2,11 @@
 
 1. Create a group.
 
-    $ sudo addgroup --system microk8s
+       $ sudo addgroup --system microk8s
 
 1. Add the current user to the group.
 
-    $ sudo adduser $USER microk8s
+       $ sudo adduser $USER microk8s
 
 1. Logout from the session and login.
 
