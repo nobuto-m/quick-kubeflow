@@ -16,8 +16,6 @@ time sudo snap install juju --classic
 time juju bootstrap microk8s
 juju add-model kubeflow
 time juju deploy --trust kubeflow
-time sleep 300
-time microk8s kubectl wait -n kubeflow deployment --all --for condition=Available=True --timeout=1h
 
 juju config dex-auth public-url=http://10.64.140.43.nip.io
 juju config oidc-gatekeeper public-url=http://10.64.140.43.nip.io
@@ -31,5 +29,5 @@ juju refresh kfp-profile-controller --channel edge
 #microk8s kubectl patch Deployment katib-controller -n kubeflow --type=json \
 #  -p='[{"op": "add", "path": "/spec/template/spec/containers/0/args/-", "value": "--trial-resources=Workflow.v1alpha1.argoproj.io"}]'
 
-time sleep 60
+time sleep 300
 time microk8s kubectl wait -n kubeflow deployment --all --for condition=Available=True --timeout=1h
