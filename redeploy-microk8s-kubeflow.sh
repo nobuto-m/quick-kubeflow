@@ -19,11 +19,13 @@ time microk8s kubectl wait deployment --all -A --for condition=Available=True --
 time sudo snap install juju --classic
 time juju bootstrap microk8s
 juju add-model kubeflow
-time juju deploy --trust kubeflow
 
-# refresh to the edge channel
-time juju status --format json | jq -r '.applications | keys[]' \
-    | xargs -t -L1 juju refresh --channel edge
+time sudo apt-get install -y unzip
+juju download kubeflow --no-progress - > quick-kubeflow.bundle
+unzip -p quick-kubeflow.bundle bundle.yaml > quick-kubeflow_bundle.yaml
+sed -i -e 's|/stable|/edge|' quick-kubeflow_bundle.yaml
+
+time juju deploy --trust kubeflow
 
 juju config dex-auth public-url=http://10.64.140.43.nip.io
 juju config oidc-gatekeeper public-url=http://10.64.140.43.nip.io
