@@ -7,7 +7,9 @@ time sudo snap remove --purge microk8s || true
 juju unregister microk8s-localhost -y || true
 
 # TODO: use 1.21/edge or something once a new revision is published to
-# the snap store: https://github.com/canonical/microk8s/pull/3206
+# the snap store:
+# https://github.com/canonical/microk8s/pull/3206
+# https://github.com/canonical/microk8s/issues/3226
 time sudo snap install microk8s --classic --channel 1.21
 
 time microk8s status --wait-ready
@@ -28,8 +30,7 @@ juju config dex-auth static-password=admin
 juju refresh kfp-profile-controller --channel edge
 
 # https://github.com/canonical/bundle-kubeflow/issues/459
-#microk8s kubectl patch Deployment katib-controller -n kubeflow --type=json \
-#  -p='[{"op": "add", "path": "/spec/template/spec/containers/0/args/-", "value": "--trial-resources=Workflow.v1alpha1.argoproj.io"}]'
+#microk8s kubectl -n kubeflow rollout restart deployment/katib-controller
 
 time sleep 300
 time microk8s kubectl wait -n kubeflow deployment --all --for condition=Available=True --timeout=1h
