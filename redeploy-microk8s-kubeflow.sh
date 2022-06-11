@@ -32,6 +32,9 @@ juju refresh kfp-profile-controller --channel edge
 # https://github.com/canonical/bundle-kubeflow/issues/459
 microk8s kubectl -n kubeflow rollout restart deployment/katib-controller
 
+time sleep 300
+time microk8s kubectl wait -n kubeflow deployment --all --for condition=Available=True --timeout=1h
+
 # Error from server (InternalError): error when creating "STDIN":
 # Internal error occurred: failed calling webhook
 # "v1.vseldondeployment.kb.io": Post
@@ -39,6 +42,3 @@ microk8s kubectl -n kubeflow rollout restart deployment/katib-controller
 # dial tcp 10.152.183.249:4443: connect: connection refused
 microk8s kubectl patch ns admin \
     -p '{"metadata":{"labels":{"serving.kubeflow.org/inferenceservice":"disabled"}}}'
-
-time sleep 300
-time microk8s kubectl wait -n kubeflow deployment --all --for condition=Available=True --timeout=1h
