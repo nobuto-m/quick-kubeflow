@@ -25,7 +25,7 @@ juju download kubeflow --no-progress - > quick-kubeflow.bundle
 unzip -p quick-kubeflow.bundle bundle.yaml > quick-kubeflow_bundle.yaml
 sed -i -e 's|/stable|/edge|' quick-kubeflow_bundle.yaml
 
-time juju deploy --trust kubeflow
+time juju deploy --trust ./quick-kubeflow_bundle.yaml
 
 juju config dex-auth public-url=http://10.64.140.43.nip.io
 juju config oidc-gatekeeper public-url=http://10.64.140.43.nip.io
