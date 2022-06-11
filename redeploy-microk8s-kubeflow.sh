@@ -21,16 +21,20 @@ time juju bootstrap microk8s
 juju add-model kubeflow
 time juju deploy --trust kubeflow
 
+# refresh to the edge channel
+time juju status --format json | jq -r '.applications | keys[]' \
+    | xargs -t -L1 juju refresh --channel edge
+
 juju config dex-auth public-url=http://10.64.140.43.nip.io
 juju config oidc-gatekeeper public-url=http://10.64.140.43.nip.io
 juju config dex-auth static-username=admin
 juju config dex-auth static-password=admin
 
 # https://github.com/canonical/kfp-operators/pull/49
-juju refresh kfp-profile-controller --channel edge
+#juju refresh kfp-profile-controller --channel edge
 
 # https://github.com/canonical/bundle-kubeflow/issues/459
-microk8s kubectl -n kubeflow rollout restart deployment/katib-controller
+#microk8s kubectl -n kubeflow rollout restart deployment/katib-controller
 
 time sleep 300
 time microk8s kubectl wait -n kubeflow deployment --all --for condition=Available=True --timeout=1h
@@ -40,5 +44,5 @@ time microk8s kubectl wait -n kubeflow deployment --all --for condition=Availabl
 # "v1.vseldondeployment.kb.io": Post
 # "https://seldon-webhook-service.kubeflow.svc:4443/validate-machinelearning-seldon-io-v1-seldondeployment?timeout=30s":
 # dial tcp 10.152.183.249:4443: connect: connection refused
-microk8s kubectl patch ns admin \
-    -p '{"metadata":{"labels":{"serving.kubeflow.org/inferenceservice":"disabled"}}}'
+#microk8s kubectl patch ns admin \
+#    -p '{"metadata":{"labels":{"serving.kubeflow.org/inferenceservice":"disabled"}}}'
