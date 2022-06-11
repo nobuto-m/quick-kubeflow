@@ -23,7 +23,8 @@ juju add-model kubeflow
 time sudo apt-get install -y unzip
 juju download kubeflow --no-progress - > quick-kubeflow.bundle
 unzip -p quick-kubeflow.bundle bundle.yaml > quick-kubeflow_bundle.yaml
-sed -i -e 's|/stable|/edge|' quick-kubeflow_bundle.yaml
+#sed -i -e 's|/stable|/edge|' quick-kubeflow_bundle.yaml
+sed -i -e 's|\(charm: seldon-core,.*channel: latest\)/stable|\1/edge|' quick-kubeflow_bundle.yaml
 
 time juju deploy --trust ./quick-kubeflow_bundle.yaml
 
@@ -33,7 +34,7 @@ juju config dex-auth static-username=admin
 juju config dex-auth static-password=admin
 
 # https://github.com/canonical/kfp-operators/pull/49
-#juju refresh kfp-profile-controller --channel edge
+juju refresh kfp-profile-controller --channel edge
 
 # https://github.com/canonical/bundle-kubeflow/issues/459
 #microk8s kubectl -n kubeflow rollout restart deployment/katib-controller
