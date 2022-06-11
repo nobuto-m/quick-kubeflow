@@ -49,3 +49,6 @@ time microk8s kubectl wait -n kubeflow deployment --all --for condition=Availabl
 # dial tcp 10.152.183.249:4443: connect: connection refused
 #microk8s kubectl patch ns admin \
 #    -p '{"metadata":{"labels":{"serving.kubeflow.org/inferenceservice":"disabled"}}}'
+
+# TODO: check this just after and 48 hours after the deployment
+#curl -svL -o/dev/null http://10.64.140.43.nip.io/
