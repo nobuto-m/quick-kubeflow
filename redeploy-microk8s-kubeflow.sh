@@ -34,16 +34,19 @@ juju config oidc-gatekeeper public-url=http://10.64.140.43.nip.io
 juju config dex-auth static-username=admin
 juju config dex-auth static-password=admin
 
+# https://github.com/canonical/bundle-kubeflow/issues/459
+#microk8s kubectl -n kubeflow rollout restart deployment/katib-controller
+
+time sleep 300
+time microk8s kubectl wait -n kubeflow deployment --all --for condition=Available=True --timeout=1h
+
 # https://github.com/canonical/kfp-operators/pull/49
 juju refresh kfp-profile-controller --channel edge
 
 # https://github.com/canonical/bundle-kubeflow/issues/462
 juju refresh seldon-controller-manager --channel edge
 
-# https://github.com/canonical/bundle-kubeflow/issues/459
-#microk8s kubectl -n kubeflow rollout restart deployment/katib-controller
-
-time sleep 300
+time sleep 120
 time microk8s kubectl wait -n kubeflow deployment --all --for condition=Available=True --timeout=1h
 
 # TODO: check this just after and 48 hours after the deployment
