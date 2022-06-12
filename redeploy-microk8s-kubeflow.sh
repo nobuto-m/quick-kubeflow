@@ -47,4 +47,4 @@ time sleep 300
 time microk8s kubectl wait -n kubeflow deployment --all --for condition=Available=True --timeout=1h
 
 # TODO: check this just after and 48 hours after the deployment
-#curl -svL -o/dev/null http://10.64.140.43.nip.io/
+curl -svL -o/dev/null http://10.64.140.43.nip.io/
