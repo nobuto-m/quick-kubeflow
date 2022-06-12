@@ -36,6 +36,7 @@ juju config dex-auth static-password=admin
 
 # https://github.com/canonical/bundle-kubeflow/issues/459
 #microk8s kubectl -n kubeflow rollout restart deployment/katib-controller
+microk8s kubectl -n kubeflow delete pod -l app.kubernetes.io/name=katib-controller
 
 time sleep 300
 time microk8s kubectl wait -n kubeflow deployment --all --for condition=Available=True --timeout=1h
