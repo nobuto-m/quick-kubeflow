@@ -44,7 +44,9 @@ time microk8s kubectl wait -n kubeflow deployment --all --for condition=Availabl
 juju refresh kfp-profile-controller --channel edge
 
 # https://github.com/canonical/bundle-kubeflow/issues/462
-juju refresh seldon-controller-manager --channel edge
+# https://github.com/canonical/seldon-core-operator/issues/29
+microk8s kubectl -n kubeflow patch service/seldon-webhook-service --type=json \
+    -p='[{"op": "remove", "path": "/spec/selector/control-plane"}]' || true
 
 time sleep 120
 time microk8s kubectl wait -n kubeflow deployment --all --for condition=Available=True --timeout=1h
