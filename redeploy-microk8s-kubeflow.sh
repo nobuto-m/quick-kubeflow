@@ -25,7 +25,6 @@ juju download kubeflow --no-progress - > quick-kubeflow.bundle
 unzip -p quick-kubeflow.bundle bundle.yaml > quick-kubeflow_bundle.yaml
 sed -i -e 's|/stable|/edge|' quick-kubeflow_bundle.yaml
 
-#time juju deploy --trust kubeflow
 time juju deploy --trust ./quick-kubeflow_bundle.yaml
 
 juju config dex-auth public-url=http://10.64.140.43.nip.io
@@ -33,11 +32,14 @@ juju config oidc-gatekeeper public-url=http://10.64.140.43.nip.io
 juju config dex-auth static-username=admin
 juju config dex-auth static-password=admin
 
+time sleep 300
+time microk8s kubectl wait -n kubeflow deployment --all --for condition=Available=True --timeout=1h
+
 # https://github.com/canonical/bundle-kubeflow/issues/459
 #microk8s kubectl -n kubeflow rollout restart deployment/katib-controller
 microk8s kubectl -n kubeflow delete pod -l app.kubernetes.io/name=katib-controller
 
-time sleep 300
+time sleep 120
 time microk8s kubectl wait -n kubeflow deployment --all --for condition=Available=True --timeout=1h
 
 # TODO: check this just after and 48 hours after the deployment
