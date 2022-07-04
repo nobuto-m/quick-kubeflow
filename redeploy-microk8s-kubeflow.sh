@@ -28,19 +28,13 @@ juju config dex-auth static-username=admin
 juju config dex-auth static-password=admin
 
 time sleep 300
+# juju-wait is not suitable for the time being
+# https://github.com/canonical/bundle-kubeflow/issues/458
 time microk8s kubectl wait -n kubeflow deployment --all --for condition=Available=True --timeout=1h
-
-# https://github.com/canonical/kfp-operators/pull/49
-juju refresh kfp-profile-controller --channel edge
 
 # https://github.com/canonical/bundle-kubeflow/issues/459
 #microk8s kubectl -n kubeflow rollout restart deployment/katib-controller
 microk8s kubectl -n kubeflow delete pod -l app.kubernetes.io/name=katib-controller
-
-# https://github.com/canonical/bundle-kubeflow/issues/462
-# https://github.com/canonical/seldon-core-operator/issues/29
-microk8s kubectl -n kubeflow patch service/seldon-webhook-service --type=json \
-    -p='[{"op": "remove", "path": "/spec/selector/control-plane"}]' || true
 
 time sleep 120
 time microk8s kubectl wait -n kubeflow deployment --all --for condition=Available=True --timeout=1h
